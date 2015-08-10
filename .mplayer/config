@@ -1,0 +1,13 @@
+# Write your default config options here!
+
+[default]
+vc=ffh264vdpau,ffodivxvdpau,ffmpeg12vdpau,
+ao=alsa
+lavdopts=threads=4
+subfont-text-scale=2.8
+double=yes
+monitoraspect=16:9
+spuaa=4
+subfont-osd-scale=3.2
+subpos=98
+embeddedfonts=yes

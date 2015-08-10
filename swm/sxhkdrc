@@ -1,0 +1,86 @@
+# ~/.config/sxhkd/sxhkdrc
+# depends on vroum, groaw, tile, fullscreen, grid, wew, focus.sh
+
+super + Q
+	pkill swm
+
+super + Return
+	urxvt
+
+Print
+    scrot -q 100 ~/Pictures/screenshots/$(date '+%Y_%m_%d-%H%M%S').png
+
+super + space
+	dmenu_run
+
+super + shift + space
+    gmrun
+
+super + x
+	killw $(pfw)
+
+super + Escape
+	kill -USR1 -x sxhkd
+
+super + Down
+	wmv 0 10 $(pfw)
+super + Up
+	wmv 0 -10 $(pfw)
+super + Right
+	wmv 10 0 $(pfw)
+super + Left
+	wmv -10 0 $(pfw)
+
+super + l
+	wrs 10 0 $(pfw)
+super + h
+	wrs -10 0 $(pfw)
+super + j
+	wrs 0 -10 $(pfw)
+super + k
+	wrs 0 10 $(pfw)
+
+super + f
+    ~/bin/fullscreen $(pfw)
+
+#XF86AudioMute
+    volume toggle
+
+# volume up
+XF86AudioRaiseVolume
+    volume +
+
+# volume down
+XF86AudioLowerVolume
+    volume -
+
+# mute toggle
+XF86AudioMute
+    volume !
+
+super + {Tab, shift + Tab}
+    ~/bin/vroum {next,prev} 2>/dev/null && \
+    wmp -a $(wattr xy $(pfw)) && \
+    wmp -r $(wattr wh $(pfw))
+
+super + shift + {h,j,k,l}
+    focus {h,j,k,l}
+
+super + {F1,F2,F3,F4,F5}
+    ~/bin/groaw -t {1,2,3,4,5}
+
+super + ctrl + {F1,F2,F3,F4,F5}
+    ~/bin/groaw -o {1,2,3,4,5}
+
+super + shift + {F1,F2,F3,F4,F5}
+    ~/bin/groaw -d all; \
+    ~/bin/groaw -a {1,2,3,4,5}
+
+super + shift + BackSpace
+    ~/bin/groaw -d all
+
+super + {t,v}
+    ~/bin/tile {-h,-v}
+
+super + g
+    ~/bin/switch_grid.sh

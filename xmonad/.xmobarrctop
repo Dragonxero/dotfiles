@@ -1,0 +1,20 @@
+Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+       , bgColor = "#010d11"
+       , fgColor = "#35D2FF"
+       , position = TopSize L 95 16
+       , lowerOnStart = True
+       , iconOffset = 7
+       , commands = [ Run Network "wlp0s29f7u4" ["-t","<icon=/home/me/xmonad/icons/net_down_03.xbm/> <rx> <icon=/home/me/xmonad/icons/net_up_03.xbm/> <tx>","-S","True","-L","0","-H","300","--normal","#00FF7F","--high","#6F00FF"] 10
+                        , Run Network "enp8s0" ["-L","0","-H","300","--normal","#00FF7F","--high","#6F00FF"] 10
+                        , Run Memory ["-t","<icon=/home/me/xmonad/icons/mem.xbm/> <usedratio>% (Cache: <cache>M)", "-L","3","-H","50","--normal","#35d2ff","--high","#6F00FF"] 10
+                        , Run Swap [] 10
+                        , Run StdinReader
+                        , Run DiskU [("/", "<icon=/home/me/xmonad/icons/diskette.xbm/> space: <used>/<size>")] ["-L", "20", "-H", "50", "-m", "1", "-p", "3"] 20
+                        , Run DiskIO [("/", "read: <read> write: <write>")]
+["-L","0","-H","5000","--normal","#00FF7F","--high","#6F00FF"] 10
+                        ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%memory% %swap% %disku% %diskio% } %StdinReader% { %wlp0s29f7u4%"
+       }
+

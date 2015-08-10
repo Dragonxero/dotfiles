@@ -1,0 +1,324 @@
+#!/usr/bin/env ruby
+
+#
+# somafm-cli - Commandline wrapper for playing SomaFM channels using mpv
+#
+# version 0.0.2
+# bgraf <bgraf@uos.de>
+# josef behr <mail@josef-behr.de>
+#
+
+
+require 'rexml/document'
+require 'net/http'
+require 'pp'
+require 'yaml'
+
+NAME = "somafm-cli" # name for config and cache subdirectories
+CONFIG_DIR = File::join(ENV["XDG_CONFIG_HOME"] || File::join(ENV["HOME"], ".config"), NAME)
+CACHE_DIR = File::join(ENV["XDG_CACHE_HOME"] || File::join(ENV["HOME"], ".cache"), NAME)
+CONFIG_FILE = "config.yaml"
+CHANNEL_FILE = "channels.xml"
+SOMA_CHANNEL_URL  = "http://somafm.com/channels.xml"
+SOMA_SONGS_URL    = "http://somafm.com/songs"
+UPDATE_INTERVAL   = 30 #seconds
+PLAYLIST_QUALITY  = {"highest" => 2,
+                     "fast"    => 1,
+                     "slow"    => 0}
+PLAYLIST_FORMAT   = {"mp3"     => 2,
+                     "aac"     => 1,
+                     "aacp"    => 1}
+
+
+@config =
+  { "defchan" => 'secretagent',
+    "playcmd"  => 'mpv -playlist %s'
+  }
+
+
+def config_path(filename)
+  File::join(CONFIG_DIR, filename)
+end
+
+def cache_path(filename)
+  File::join(CACHE_DIR, filename)
+end
+
+
+def sort_playlists(playlists)
+  playlists.sort_by do |elem|
+    quality, format, _ = elem
+    0 - (10 * (PLAYLIST_QUALITY[quality] || 0)
+        + (PLAYLIST_FORMAT[format] || 0))
+  end
+end
+
+
+def channels_from_xml(data)
+  doc = REXML::Document.new data
+
+  channels = {}
+  doc.elements.each('channels/channel') do |elt|
+    hash = {}
+    playlists = []
+    elt.elements.each do |attr|
+      if PLAYLIST_QUALITY.key? attr.name[0..-4] then
+        playlists << [attr.name[0..-4], attr.attributes["format"], attr.text]
+      else
+        hash[attr.name] = attr.text
+      end
+    end
+    id = elt.attributes["id"]
+    hash["id"] = id
+    hash["playlists"] = sort_playlists(playlists)
+    channels[id] = hash
+  end
+  channels
+end
+
+
+def songs_from_xml(data)
+  doc = REXML::Document.new data
+
+  songs = []
+  doc.elements.each('songs/song') do |elt|
+    hash = {}
+    elt.elements.each do |attr|
+      hash[attr.name] = attr.text
+    end
+    songs << hash
+  end
+  songs
+end
+
+
+def http_get(url)
+  Net::HTTP.get_response(URI.parse(url)).body
+end
+
+
+def print_usage_and_exit
+  ["Usage: somafm play <name>     - play channel <name>",
+   "       somafm list            - show available channels",
+   "       somafm update          - manually update channel list",
+   "       somafm set <key> <val> - change setting of config variable <key>",
+   "       somafm get             - show current configuration settings"
+  ].each {|e| puts e }
+  exit 0
+end
+
+
+def generate_bash_completion(channels)
+  ids = channels.keys
+  File.open(cache_path("bash-completion"), 'w') do |f|
+    f.write(
+     ["_somafm()",
+      "{",
+      "local cur prev",
+      "COMPREPLY=()",
+      "cur=${COMP_WORDS[$COMP_CWORD]}",
+	  "prev=${COMP_WORDS[$COMP_CWORD-1]}",
+	  "cmds='update list play set get'",
+	  "case \"${prev}\" in",
+	  "    play)",
+	  "        COMPREPLY=( $(compgen -W \"#{ids.join(' ')}\" ${cur}) )",
+	  "        return 0",
+	  "        ;;",
+	  "    set)",
+	  "        COMPREPLY=( $(compgen -W \"#{@config.keys.join(' ')}\" ${cur}) )",
+	  "        return 0",
+	  "        ;;",
+	  "    *)",
+	  "    ;;",
+	  "esac",
+      "COMPREPLY=( $( compgen -W \"${cmds}\" -- $cur ) )",
+      "return 0",
+      "}",
+      "complete -F _somafm somafm"
+     ].join("\n")
+	  )
+  end
+end
+
+
+def cmd_update
+  puts "Loading channel list from #{SOMA_CHANNEL_URL}... "
+  data = http_get SOMA_CHANNEL_URL
+  File.open(cache_path(CHANNEL_FILE), 'w') {|f| f.write(data) }
+  generate_bash_completion(channels_from_xml(data))
+end
+
+
+def read_channels
+  file = cache_path(CHANNEL_FILE)
+  if not File.exist? file then
+    puts "Channel list not found, updating ... "
+	cmd_update
+  end
+  data = File.new(file).read
+  channels_from_xml(data)
+end
+
+
+def update_songs(id)
+  url = "#{SOMA_SONGS_URL}/#{id}.xml"
+  http_get url
+end
+
+
+def print_song(song)
+  puts Time.at(song["date"].to_i).to_s
+  puts " Title:  #{song["title"]}"
+  puts " Artist: #{song["artist"]}"
+  puts " Album:  #{song["album"]}"
+  puts ""
+end
+
+
+def print_songs_since(songs, time)
+  songs.select{|e| e["date"].to_i > time}.reverse_each do |e|
+    print_song e
+  end
+
+end
+
+
+def loop_songprint(chan)
+  id = chan["id"]
+  start_time = 0
+  while true do
+    data = update_songs(id)
+    songs = songs_from_xml(data)
+    if start_time == 0 then
+      print_song songs[0]
+    else
+      print_songs_since(songs, start_time)
+    end
+    start_time = songs[0]["date"].to_i
+
+    sleep UPDATE_INTERVAL
+  end
+end
+
+
+def start_player(chan)
+  _,_,pls = chan["playlists"][0]
+
+  pid = spawn(sprintf(@config["playcmd"], pls), :out=>"/dev/null",:err=>"/dev/null")
+  Process.detach(pid)
+  trap "SIGINT" do
+    Process.kill(:SIGTERM, pid) if pid != nil
+    puts "Bye.."
+    exit 0
+  end
+
+  loop_songprint(chan)
+end
+
+
+def cmd_play
+  name = ARGV[1] || @config["defchan"]
+  channels = read_channels
+
+  if channels.key? name then
+    start_player channels[name]
+  else
+    puts "Error: no such channel '#{name}'."
+    puts "Try setting a default channel using somafm set defchan <name>"
+  end
+end
+
+
+def cmd_list
+  channels = read_channels
+
+  channels.keys.sort.each do |id|
+    puts "#{id.ljust(15)} #{channels[id]["title"].ljust(25)} #{channels[id]["description"]}"
+  end
+end
+
+
+def cmd_set
+  key = ARGV[1]
+  value = ARGV[2]
+  if key != nil and value != nil then
+    if @config.key? key then
+	  @config[key] = value
+	  return
+	end
+  end
+  puts "Not a valid setting, aborting."
+end
+
+
+def cmd_get
+  puts "#{NAME} current configuration settings:"
+  @config.each do |key,value|
+    puts "#{key} = #{value}"
+  end
+end
+
+
+def load_config
+  path = config_path(CONFIG_FILE)
+  if File::exists? path then
+    data = File.open(path).read
+    cfg = YAML.load(data)
+    @config.merge! cfg
+  end
+end
+
+
+def save_config
+  path = config_path(CONFIG_FILE)
+  File.open(path, 'w') {|f| f.write(YAML.dump @config)}
+end
+
+
+def cmd_clear
+  puts "Removing somafm config and cached files ..."
+  pwd = Dir.getwd
+  Dir.chdir(CONFIG_DIR)
+  Dir.glob("*") {|file| File.delete(file)}
+  puts "Configuration files removed."
+  Dir.chdir(CACHE_DIR)
+  Dir.glob("*") {|file| File.delete(file)}
+  puts "Cached files removed."
+  Dir.chdir(pwd)
+  Dir.rmdir(CONFIG_DIR)
+  Dir.rmdir(CACHE_DIR)
+  puts "Remaining empty directories removed."
+end
+
+
+def main
+  if !File.directory?(CONFIG_DIR) then
+    Dir.mkdir(CONFIG_DIR)
+  end
+  if !File.directory?(CACHE_DIR) then
+    Dir.mkdir(CACHE_DIR)
+  end
+  load_config
+  
+  cmd = ARGV[0]
+  #puts "cmd = #{cmd}"
+  handler = "cmd_#{cmd}"
+  #puts "handler = #{handler}"
+  #puts self.respond_to?(handler)
+  # todo get respond_to? to work properly, until then ...
+  cmds = ["get", "set", "list", "update", "play", "clear"]
+  if cmd == nil or !cmds.include? cmd then
+    print_usage_and_exit
+  else
+	self.send(handler)
+  end
+
+  if cmd != "clear" then
+    save_config
+  end
+end
+
+
+if __FILE__ == $0 then
+  main
+end

@@ -1,0 +1,3 @@
+alias friend1 longfriend1 friend1@example.com
+
+# vim: set ft=muttrc tw=72 colorcolumn=73:

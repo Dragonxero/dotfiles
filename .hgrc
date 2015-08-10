@@ -1,0 +1,31 @@
+[ui]
+username = me <me@example.com>
+     
+[extensions]
+#hgk=
+purge =
+strip =
+color =
+pager =
+progress =
+rebase =
+     
+[pager]
+pager = LESS='FSRX' less
+attend = tags, help, annotate, cat, diff, export, status, outgoing, incoming, glog, log, grep
+     
+[web]
+cacerts = /etc/ssl/certs/ca-certificates.crt
+     
+[color]
+status.modified = blue bold
+status.added = green bold
+status.removed = red bold
+status.deleted = cyan bold underline
+status.unknown = magenta bold underline
+status.ignored = black bold
+diff.diffline = bold
+diff.extended = cyan bold
+diff.file_a = red bold
+diff.file_b = green bold
+diff.hunk = magenta

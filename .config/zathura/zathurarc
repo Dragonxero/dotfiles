@@ -1,0 +1,61 @@
+# zathurarc-dark
+
+set font                        "inconsolata 9"
+set default-bg                  "#151515" #00
+set default-fg                  "#202020" #01
+set statusbar-fg                "#B0B0B0" #04
+set statusbar-bg                "#202020" #01
+set inputbar-bg                 "#151515" #00 currently not used
+set inputbar-fg                 "#303030" #02
+set notification-error-bg       "#AC4142" #08
+set notification-error-fg       "#151515" #00
+set notification-warning-bg     "#AC4142" #08
+set notification-warning-fg     "#151515" #00
+set highlight-color             "#F4BF75" #0A
+set highlight-active-color      "#6A9FB5" #0D
+set completion-highlight-fg     "#303030" #02
+set completion-highlight-bg     "#75B5AA" #0C
+set completion-bg               "#303030" #02
+set completion-fg               "#75B5AA" #0C
+set notification-bg             "#90A959" #0B
+set notification-fg             "#151515" #00
+set recolor-lightcolor          "#151515" #00
+set recolor-darkcolor           "#E0E0E0" #06
+set recolor                     "true"
+# setting recolor-keep true will keep any color your pdf has.
+# if it is false, it'll just be black and white
+set recolor-keephue             "true"
+# Rest of your configs go here:
+
+#// main:
+#set font "fixedzero normal 9"
+set adjust-open best-fit
+set guioptions s
+set n-completion-items 10
+set show-scrollbars false
+set window-title-basename true
+set statusbar-basename true
+set statusbar-v-padding 10
+set statusbar-h-padding 4
+set page-padding 10
+set pages-per-row 1
+set scroll-page-aware true
+set scroll-wrap true
+set scroll-full-overlap 0.1
+set zoom-min 5
+set zoom-max 1000
+set zoom-step 5
+set selection-clipboard primary
+
+#// keybindings:
+map <BackSpace> navigate previous
+map <PageUp> scroll full_up
+map <PageDown> scroll full_down
+map + zoom in
+map - zoom out
+map w adjust_window width
+map z adjust_window bestfit
+map <M-f> toggle_fullscreen 0 all
+map <C-p> print
+map q quit
+map <C-g> abort

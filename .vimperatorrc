@@ -1,0 +1,46 @@
+"3.9 (created: 2015/02/15 15:49:05)
+
+" Basic settings
+set runtimepath=~/.vimperator
+source! ~/.vimperatorrc.local
+colorscheme molokai
+
+" Default search engine: encrypted-google
+set defsearch=google1
+
+" No toolbars or menus by default
+set toolbars=noaddons,nobookmarks,nomenu,nonavigation,tabs
+
+" Get rid of scrollbars
+set noscrollbars
+
+" Elements of the status line
+set status=input,location,tabcount,bookmark,position
+
+" Window title
+set titlestring=Firefox
+
+" bell options
+"set noerrorbells
+"set novisualbell
+
+" set the mapleader key
+let mapleader = ","
+let g:mapleader = ","
+
+" sourcing .vimperatorrc
+noremap <Leader>r :source ~/.vimperatorrc<CR>
+
+" Searching
+" find as you type
+set incsearch
+" highlight the terms
+set hlsearch
+" make searches case-insensitive
+set ignorecase
+" unless they contain upper-case letters
+set smartcase
+" a toggle for search highlight
+map <silent> <leader>h :set hlsearch!<CR>
+
+" vim: set ft=vimperator:

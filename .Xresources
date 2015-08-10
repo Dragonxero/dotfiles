@@ -1,0 +1,112 @@
+! urxvt settings
+
+
+!--[Title]--!
+
+URxvt*title: urxvt
+URxvt*termName: rxvt-unicode-256color
+URxvt*cursorBlink: true
+URxvt*urgentOnBell: true
+URxvt.cursorColor: #0a9dff
+!Xcursor.theme: Bluecurve
+Xcursor.theme: Breeze_Hacked
+!URxvt.letterSpace: -1
+
+!Xcursor.size: 16 
+!## set manual colors: bold, italics, underlina
+URxvt.colorIT:      #14cf24
+URxvt.colorBD:      #9328f7
+URxvt.colorUL:      #f0df28
+
+!## The transparency stuff
+!## Now handled by compton 
+!URxvt.inheritPixmap: true
+!URxvt.tintColor: white
+!URxvt.shading: 40
+!## or
+!URxvt.background: [95]black
+!URxvt.foreground: lightgrey
+!URxvt.depth: 32
+!URxvt.transparent: true
+!URxvt.shading: 20
+
+!## Fonts
+!URxvt*font:xft:Inconsolatazi4:medium:size=8, \
+!xft:unifont:medium
+!URxvt*boldFont:xft:Inconsolatazi4:medium:size=8, \
+!xft:unifont:medium
+
+!URxvt*font: xft:Terminess:pixelsize=9,xft:Inconsolata for Powerline:pixelsize=9
+!URxvt*font: xft:Inconsolata for Powerline:regular:pixelsize=12,xft:Dejavu Sans Mono
+!URxvt*font: xft:Inconsolata for Powerline:regular:pixelsize=12
+!URxvt.font: xft:DejaVu Sans Mono:normal:size=8
+!URxvt*font: xft:Terminess Powerline:size=8
+!URxvt*font: xft:Ohsnap-11
+!URxvt*font: xft:Terminus:pixelsize=10,xft:Inconsolata\ for\ Powerline:pixelsize=12
+URxvt*font: xft:Source\ Code\ Pro\ Medium:pixelsize=11:antialias=true:hinting=true,xft:Source\ Code\ Pro\ Medium:pixelsize=13:antialias=true:hinting=true
+!URxvt.font: -*-ohsnap-medium-r-*-*-12-*-*-*-*-*-*-*
+!URxvt.font: xft:uushi:pixelsize=10:antialias=false:hinting=true
+
+!urxvt*font: -*-lemon-*-*-*-*-*-*-*-*-*-*-*-*
+!urxvt*boldFont: -*-lemon-*-*-*-*-*-*-*-*-*-*-*-*
+!urxvt*italicFont: -*-lemon-*-*-*-*-*-*-*-*-*-*-*-*
+!urxvt*bolditalicFont: -*-lemon-*-*-*-*-*-*-*-*-*-*-*-*
+
+URxvt.scrollBar: false
+
+!##open clicable URLs
+URxvt.perl-ext-common:  default,matcher,clipboard,url-select,bell-command,keyboard-select,tabbed
+URxvt.url-launcher:      /usr/bin/firefox
+URxvt.matcher.button:   1
+urxvt.keysym.M-Escape: perl:keyboard-select:activate
+urxvt.keysym.M-c: perl:clipboard:copy
+urxvt.keysym.C-v: perl:clipboard:paste
+urxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+urxvt.clipboard.copycmd: xsel -ib
+urxvt.clipboard.pastecmd: xsel -ob
+URxvt.tabbed.tabbar-fg: 1
+URxvt.tabbed.tabbar-bg: 0
+URxvt.tabbed.tab-fg: 2
+URxvt.tabbed.tab-bg: 0
+
+!##colors
+! black
+!URxvt*color0 : #2E3436
+!URxvt*color8 : #555753
+
+! red
+!URxvt*color1 : #de2345
+!URxvt*color9 : #902020
+
+! green
+!URxvt*color2 : #447241
+!URxvt*color10 : #27a343
+
+! yellow
+!URxvt*color3 : #c1951a
+!URxvt*color11 : #d5a30e
+
+! blue
+!URxvt*color4 : #446099
+!URxvt*color12 : #345fa8
+
+! magenta
+!URxvt*color5 : #a422a3
+!URxvt*color13 : #a42273
+
+! cyan
+!URxvt*color6 : #4f9fdc
+!URxvt*color14 : #12bccb
+
+! white
+!URxvt*color7 : #D3D7CF
+!URxvt*color15 : #EEEEEC
+!
+#include "xcolors/base16-xresources/base16-summerfruit.dark.xresources"
+!#include "xcolors/base16-xresources/base16-monokai.dark.256.xresources"
+!#include "xcolors/base16-xresources/base16-grayscale.dark.256.xresources"
+!#include "xcolors/monokai"
+!#include "xcolors/b52"
+!#include "xcolors/solarized"
+!#include "xcolors/zenburn"
+!#include "xcolors/badwolf"

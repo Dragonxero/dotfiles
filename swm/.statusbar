@@ -1,0 +1,105 @@
+#!/bin/bash
+# ~/.statusbar
+
+BLACK=#FF010D11
+RED=#FFFF2400
+GREEN=#FF00FF7F
+YELLOW=#FFDFFF00
+BLUE=#FF1E90FF
+MAGENTA=#FFFF003f
+GREEND=#FF29ABB7
+CYAN=#FF35D2FF
+WHITE=#FFD2D1D4
+DARK=#FF0C0C0C
+GREY=#FF7C7B78
+VIOLET=#FF6F00FF
+function statusbar {
+
+	bat() {
+	bat0=$(acpi|cut -d "," -f 2)
+	echo $bat0
+	}
+	
+	clock() {
+	time=$(date "+%A %b %d %Y %R")
+	echo $time
+	}
+
+	vol() {
+	vol="$(amixer get Master | sed -nr '$ s:.*\[(.+%)].*:\1:p')"
+	echo $vol
+	}
+
+	kern() {
+	kern=$(uname -r)
+	echo $kern
+	}
+
+  load() {
+  load=$(cat /proc/loadavg|awk '{print $1}')
+  echo $load
+  }
+
+  cpuload() {
+  LINE=`ps -eo pcpu |grep -vE '^\s*(0.0|%CPU)' |sed -n '1h;$!H;$g;s/\n/ +/gp'`
+  echo $(bc <<< $LINE)
+  }
+
+  memused() {
+  read t f <<< `grep -E 'Mem(Total|Free)' /proc/meminfo |awk '{print $2}'`
+  bc <<< "scale=2; 100 - $f / $t * 100" | cut -d. -f1
+  }
+
+  net(){
+  essid=`iwgetid | awk -F ':' '{print $2}' | sed -e 's/"//g'`
+  signal=`awk '/wlp7s0:/ {print $3}' /proc/net/wireless |sed -e 's/\.//g'`
+  perc=`echo $[$signal *100/70]`
+  echo -e "$essid $perc"
+  }
+   
+  moc() {
+  RESULT=`pgrep mocp`
+  if [ "${RESULT:-null}" = null ]; then
+    echo -e "No music today"
+  else
+    mocs=$(mocp -Q %song)
+    moca=$(mocp -Q %artist)
+    echo -e "$mocs-$mocsa"
+  fi
+  }
+
+  disk(){
+  root=`df -h | grep \/dev\/sda1 | awk '{print $3}'`
+  echo -e "$root"
+  }
+	up() {
+	up=$(uptime -p)
+	echo $up
+	}
+
+  weather() {
+  weather=$(~/bin/weather.sh ZMUB)
+  echo $weather
+  }
+
+  temp() {
+  temp=$(acpi -V | awk '/Thermal 0: ok,/{print $4}' | sed -e 's/\../°C/g')
+  echo $temp
+  }
+
+  echo "%{B$MAGENTA} %{F$DARK} %{B-}%{F-} %{F$MAGENTA}$(load)% %{B-}%{F-}%{B-}%{F-}\
+%{B$GREEN} %{F$DARK} %{B-}%{F-} %{F$GREEN}$(cpuload)% %{B-}%{F-}%{B$YELLOW}%{F$DARK}  %{B-}%{F-} %{F$YELLOW}$(memused)% %{B-}%{F-}\
+%{B$CYAN} %{F$DARK} %{B-}%{F-} %{F$CYAN}$(temp)% %{B-}%{F-}%{B$GREEN} %{F$DARK} %{B-}%{F-} %{F$GREEN}$(disk)% %{B-}%{F-}\
+%{B$CYAN}%{F$DARK}  %{B-}%{F-} %{F$CYAN}$(vol)% %{B-}%{F-}%{B$MAGENTA}%{F$DARK}  %{B-}%{F-} %{F$MAGENTA}$(bat)%\
+%{c}%{B$VIOLET} %{F$DARK} $(kern)% %{B-}%{F-} %{r}\
+%{B$GREEN} %{F$DARK} %{B-}%{F-} %{F$GREEN}$(moc)% %{B-}%{F-}\
+%{B$MAGENTA} %{F$DARK} %{B-}%{F-} %{F$MAGENTA}$(weather)% %{B-}%{F-}\
+%{B$GREEND} %{F$DARK} %{B-}%{F-} %{F$GREEND}$(net)% %{B-}%{F-}%{B$YELLOW}%{F$DARK}  %{B-}%{F-} %{F$YELLOW}%$(clock) "
+}
+while true 
+do
+	echo "$(statusbar)"
+	sleep 0.5	
+done | lemonbar -d -g 1850x15 -f "-*-stlarch-medium-r-*-*-10-*-*-*-*-*-*-*,-xos4-terminesspowerline-medium-r-normal--0-0-72-72-c-0-iso10646-1" -B "#FF010D11" -F "#FFD2C5BC" -p &
+
+# vim: set ft=sh ts=2 sw=2 tw=0 fenc=utf-8:

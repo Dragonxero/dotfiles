@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# start recording a script, and upload it in base64 to sprunge
+# usage: nx-termcast [url]
+
+nx_upload() {
+    # feel free to override, if you know what you're doing
+    curl -sF 'sprunge=<-' http://sprunge.us
+}
+
+nx_record() {
+    script --timing=timing typescript
+    # make a motherfucking tarbomb
+    tar cz . | base64 | nx_upload
+}
+
+nx_replay() {
+    curl -s "$*" | base64 -d | tar xz
+    scriptreplay timing typescript
+}
+
+# that's to prevent the motherfucking tarbombs
+cd $(mktemp -d)
+
+# give the impression of a clean session
+clear
+
+# either record or play, your choice
+test -n "$1" && nx_replay "$*" || nx_record

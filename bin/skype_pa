@@ -1,0 +1,5 @@
+#!/bin/bash
+pulseaudio --start
+xhost +local: && su skype -c skype
+pulseaudio --kill
+xhost -

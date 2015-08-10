@@ -1,0 +1,75 @@
+## This makes lftp faster but doesn't work with some sites/routers
+set ftp:sync-mode off
+
+## Set this to follow http redirections
+set xfer:max-redirections 10
+
+## Local character set. It is set from current locale initially.
+#set file:charset UTF-8
+#set ftp:charset "UTF-8"
+#set sftp:charset "UTF-8"
+#set fish:charset UTF-8
+
+## If you don't like advertising lftp or servers hate it, set this:
+### set ftp:anon-pass "mozilla@"
+set ftp:client "FileZilla 3.10.1.1"
+set http:user-agent "Mozilla/4.7 [en] (WinNT; I)"
+
+## If you are having trouble connecting to a server due to SSL or certificate issues:
+set ftp:ssl-allow/example.com false
+set ssl:verify-certificate/example.com no
+
+## Have a nice prompt
+#set prompt "\[\e[1;32m\]\u@\S\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]$ "
+#set prompt "\[\e[1;30m\][\[\e[0;34m\]f\[\e[1m\]t\[\e[37m\]p\[\e[30m\]] \[\e[34m\]\u\[\e[0;34m\]\@\[\e[1m\]\h\[\e[1;30m\]:\[\e[1;34m\]\w\[\e[1;30m\]>\[\e[0m\] "
+set prompt "\[\033[36m\]\u\[\033[32m\]\@\[\033[36m\]\h\[\033[33m\]:ftp\[\033[32m\] [\[\033[32m\]\w\[\033[32m\]] \[\033[0m\]\n"
+
+## Terminal strings to set titlebars for terminals that don't
+### properly specify tsl and fsl capabilities.
+### Use cmd:set-term-status to enable this.
+set cmd:term-status/*screen* "\e_\T\e\\"
+set cmd:term-status/*xterm* "\e[11;0]\e]2;\T\007\e[11]"
+set cmd:term-status/*rxvt* "\e[11;0]\e]2;\T\007\e[11]"
+set cmd:set-term-status on
+
+## Aliases, tho I'm not sure why are the first 4 useful, so I commented them out.
+### The last alias realy rocks. The last alias (edit) should be all in one line. 
+### It allows you to get a remote file, edit it with vim (change as needed), and 
+### place the edited file back on the server.
+##alias dir ls
+##alias less more
+##alias zless zmore
+##alias bzless bzmore
+alias reconnect "close; cache flush; cd ."
+alias edit "eval -f \"get $0 -o ~/.lftp/edit.tmp.$$ && shell \\\"cp -p ~/.lftp/edit.tmp.$$ ~/.lftp/edit.tmp.$$.orig && $EDITOR ~/.lftp/edit.tmp.$$ && test ~/.lftp/edit.tmp.$$ -nt ~/.lftp/edit.tmp.$$.orig\\\" && put ~/.lftp/edit.tmp.$$ -o $0; shell rm -f ~/.lftp/edit.tmp.$$*\""
+
+## Save plain text passwords in ~/.lftp/bookmarks on 'bookmark add' command 
+## if you do not mind placing usernames and passwords on disk. Off by default.
+## Example ~/.lftp/bookmarks
+## kernel ftp://ftp.kernel.org:/pub/linux/kernel
+## server ftp://user:password@server.org/public_html
+set bmk:save-passwords true
+
+## Configure PROXY
+#set hftp:proxy 10.7.1.6:3128
+#set http:proxy 10.7.1.6:3128
+
+## No history or logs
+set cmd:save-cwd-history no
+set cmd:save-rl-history no
+set xfer:log no
+
+## Synchronous mode for broken servers and/or routers
+#set sync-mode/ftp.idsoftware.com on
+#set sync-mode/ftp.microsoft.com on
+#set sync-mode/sunsolve.sun.com on
+
+## Extended regex to match first server message for automatic sync-mode.
+##set auto-sync-mode "icrosoft FTP Service|MadGoat|MikroTik" 
+
+set cmd:remote-completion true
+set color:use-color auto
+
+## If this setting is off, get commands will not overwrite existing files 
+### and generate an error instead. 
+set xfer:clobber on

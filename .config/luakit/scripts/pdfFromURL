@@ -1,0 +1,14 @@
+url=$1
+file="${url##*/}"
+echo $file
+case "$file" in  
+     *\%20* )
+	   urxvtc -e aria2c --allow-overwrite=true -d ~/Downloads/ $url -o lousy_file_name_that_had_spaces.pdf
+	   zathura ~/Downloads/lousy_file_name_that_had_spaces.pdf
+#	   echo "found a damned space in file name!" 
+          ;;
+       *)
+	   urxvtc -e aria2c --allow-overwrite=true -d /var/tmp $url 
+	   zathura ~/Downloads/$file
+           ;;
+esac

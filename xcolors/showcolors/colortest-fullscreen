@@ -1,0 +1,28 @@
+#!/bin/bash
+
+clear
+    
+_term_width=$(tput cols)
+_term_height=$(tput lines)
+_bar_count=8
+_bar_width=$(expr $_term_width / $_bar_count)
+    
+l="1"
+b="0"
+s="0"
+    
+while [[ "$l" -lt $_term_height ]]; do
+    b="0"
+    while [[ "$b" -lt $_bar_count ]]; do
+        s="0"
+        while [[ "$s" -lt $_bar_width ]]; do
+            echo -en "\033[3"$b"m█"
+            s=$(expr $s + 1)
+        done
+        b=$(expr $b + 1)
+    done
+    echo
+    l=$(expr $l + 1)
+done
+
+

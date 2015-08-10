@@ -1,0 +1,36 @@
+! colors -----------------------------------------------------------------------
+                                                                                 
+*background: #000000                                                            
+*foreground: #ffffff                                                            
+                                                                                 
+! black                                                                         
+*color0: #000000                                                                
+*color8: #000000                                                                
+                                                                                 
+! red PANTONE 805c                                                              
+*color1: #ff535a                                                                
+*color9: #ff535a                                                                
+                                                                                 
+! green PANTONE 802c                                                            
+*color2: #5adb3c                                                                
+*color10: #5adb3c                                                               
+                                                                                 
+! yellow PANTONE 803c                                                           
+*color3: #ffe818                                                                
+*color11: #ffe818                                                               
+                                                                                 
+! blue PANTONE 801c                                                             
+*color4: #00b0d8                                                                
+*color12: #00b0d8                                                               
+                                                                                 
+! magenta PANTONE 806c                                                          
+*color5: #ff10a4                                                                
+*color13: #ff10a4                                                               
+                                                                                 
+! cyan (orange) PANTONE 804c                                                    
+*color6: #ff9838                                                                
+*color14: #ff9838                                                               
+                                                                                 
+! white                                                                         
+*color7: #ffffff                                                                
+*color15: #ffffff    

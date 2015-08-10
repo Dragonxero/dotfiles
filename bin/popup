@@ -1,0 +1,64 @@
+#!/bin/sh
+#
+# z3bra - (c) wtfpl 2014
+# Create a small popup with the given text
+
+TEXT='none'
+SLEEP=3
+
+# bar options
+font='-*-stlarch-medium-r-*-*-10-*-*-*-*-*-*-*'
+font="$font,-xos4-terminesspowerline-medium-r-normal--0-0-72-72-c-0-iso10646-1"
+bg="#ff161616"
+fg="#ffffffff"
+hl="#ff443232"
+
+IFS=' x' read x y <<< `xrandr | grep '*' | sed 1q | awk '{print $1}'`
+
+width=300
+height=20
+offx=$(( x - $width  - 10 ))
+#offy=$(( y - $height - 10 ))
+offy=10
+
+title=""
+geom=${width}x${height}+${offx}+${offy}
+
+usage() {
+    echo "`basename $0` [-hb] [-d delay] [-t title] [-g WxH+X+Y] [TEXT]"
+}
+
+spawn() {
+    prefix="%{F${fg}}  ${title} %{F-}"
+    (echo "%{l}${prefix} %{r}$@  ";sleep $SLEEP) | bar -d -g $geom -f $font -B $bg -F $fg
+}
+
+loop() {
+    (while :; do
+        echo "%{c}`$1`"
+        sleep $SLEEP
+    done) | bar -g $geom -f $font -B $bg -F $fg
+}
+
+test "$#" -lt 1 && exit 1
+
+while getopts ":bd:g:hlt:" opt; do
+    case $opt in
+        b) BEEP=1        ;;
+        l) LOOP=1        ;;
+        d) SLEEP=$OPTARG ;;
+        g) geom=$OPTARG  ;;
+        t) title=$OPTARG ;;
+        h) usage; exit 0 ;;
+        *) usage; exit 1 ;;
+    esac
+done
+
+shift $(( OPTIND - 1 ));
+
+TEXT="$@" 
+FUNC="echo $TEXT"
+
+# that beep can be *REALLY* annoying
+test -n "$BEEP" && beep -f 1500 -d 20 -l 100
+test -n "$LOOP" && loop "$FUNC" || spawn "$TEXT"

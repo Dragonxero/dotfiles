@@ -1,0 +1,30 @@
+# Config file for account1
+
+color status     brightwhite   green
+color indicator  brightwhite   green
+
+set imap_user = "me1@example1.com"
+set imap_pass = $my_pw_account1
+set smtp_url = "smtp://me1@example1.com@mail.example1.com:587/"
+set smtp_pass = $my_pw_account1
+set from = "me1@example1.com"
+set realname = "me1"
+set folder = imaps://mail.example1.com:993/
+set spoolfile = +INBOX
+set postponed = +Drafts
+#mailboxes = +INBOX
+set record = +Sent
+unmailboxes *
+mailboxes =INBOX =Drafts =Sent =Trash
+#set imap_check_subscribed
+set header_cache = ~/.mutt/account1/cache/headers
+set message_cachedir = ~/.mutt/account1/cache/bodies
+set certificate_file = ~/.mutt/account1/certificates 
+set signature = ~/.mutt/account1/signature
+set ssl_starttls = yes
+#set ssl_force_tls = yes
+set hostname = "account1.com"
+account-hook account1/* "set imap_user=me1@example1.com imap_pass=$my_pw_account1"
+macro index D "<save-message>+Trash<enter>" "move message to the trash"
+
+# vim: set ft=muttrc tw=72 colorcolumn=73:

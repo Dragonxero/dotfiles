@@ -1,0 +1,41 @@
+" Vimperator Molokai
+" Based on molokai.vim in https://github.com/vehk/dotfiles/blob/master/vim/colors/molokai.vim
+" See also term colors: https://github.com/vehk/dotfiles/blob/master/colors/molokai
+" ~ Wolfgang Mueller
+hi Normal               background: #121112; color:#D0CFD0;
+hi CmdLine              background: #121112; color:#D0CFD0; font-family: "Terminess Powerline"; font-size: 8pt;
+highlight! CmdLine>* font-family: "Terminess Powerline"; font-size: 8pt; height: 24px;
+
+hi CompGroup            background: #121112; color:#D0CFD0;
+hi CompTitle            background: #1c1b1c; font-weight: bold;
+hi CompTitle>*          color: #D0CFD0; padding: 1px 0.5ex; font-family: "Terminess Powerline"; font-size: 8pt;
+hi CompItem             background:#121112; color:#D0CFD0; font-family: "Terminess Powerline"; font-size: 8pt;
+hi CompItem[selected]   color: #FF9926; background: #262426; font-family: "Terminess Powerline"; font-size: 8pt;
+hi CompDesc             width: 500px; max-width: 500px; color: #465457; font-family: "Terminess Powerline"; font-size: 8pt;
+hi CompMsg              margin-left: 16px; font-family: "Terminess Powerline"; font-size: 8pt;
+hi ErrorMsg             background: #D7005F; color: #D0CFD0; font-weight: bold font-family: "Terminess Powerline"; font-size: 8pt;
+hi Filter               color: #FF8700; background: #262426;font-family: "Terminess Powerline"; font-size: 8pt;
+hi StatusLine           color: #D0CFD0; background: transparent; font-weight: normal; font-family: "Terminess Powerline"; font-size: 8pt;
+
+"highlight! StatusLine color: #AAABAD; background: #27282B; font-family: "Droid Sans"; font-size: 8pt;
+hi Hint                 font-family: monospace; font-size: 8px; font-weight: bold; color: white; background-color: red; border-color: ButtonShadow; border-width: 0px; border-style: solid; padding: 0px 1px 0px 1px;
+hi Hint::after          content: attr(number);
+hi HintActive           background-color: #88FF00; color: black; font-family: "Terminess Powerline"; font-size: 8pt;
+hi HintElem             background-color: yellow; color: black;
+hi HintImage            opacity: .5;
+hi URL                  text-decoration: none; color: #87FF00; font-family: "Terminess Powerline"; font-size: 8pt;
+hi ModeMsg              color: white; background: #3E6700; border-radius: 1px; padding: 0px 5px; font-family: "Terminess Powerline"; font-size: 8pt;
+hi PromptText           color: white; background: #860EFF; font-family: "Terminess Powerline"; font-size: 8pt; padding-top: 5px; 
+hi MoreMsg              background-color: #121112; color: #87FF00; font-family: "Terminess Powerline"; font-size: 8pt;
+hi Tag                  color: #005F87;
+hi InfoMsg              background: #121112; color: #87FF00; font-family: "Terminess Powerline"; font-size: 8pt;
+hi WarningMsg           background: #121112; color: #D7005F; font-family: "Terminess Powerline"; font-size: 8pt;
+hi Null                 color: #005F87;
+hi Number               color: #005F87;
+hi NonText              color: #B973FF; min-height: 8px; padding-left: 2px;
+hi Title                background-color: #D7005F; color: #D0CFD0; font-weight: bold;
+hi Indicator            color: #D7005F;
+hi ContentSeparator     border-top: 1px solid #262426; display: -moz-box;
+
+
+

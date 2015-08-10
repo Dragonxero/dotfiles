@@ -1,0 +1,99 @@
+#----------------------------------------------------------------
+## File:     ~/.mutt/muttrc
+## Gathered by:   liara
+## Based on https://github.com/pbrisbin/mutt-config
+##          http://git.z3bra.org/cgit.cgi/dotfiles/tree/mutt/
+##          https://bitbucket.org/jasonwryan/shiv/src/10d2d62f34f7/.mutt/
+##http://www.df7cb.de/blog/2010/Using_multiple_IMAP_accounts_with_Mutt.html
+##---------------------------------------------------------------
+
+## --- Basic email related settings ---
+set imap_keepalive	= 300  # keep IMAP connection alive by polling intermittently
+set mail_check		= 0      # minimum time between scans
+#set imap_check_subscribed
+set timeout = 30           # idle time before scanning
+set sleep_time = 0         # instantaneous mailbox change
+set mbox_type = Maildir
+
+## --- Editing ---
+set editor		= vim                         # use vim to edit
+set edit_headers=yes                        # allow header editing
+set forward_format = "fwd: %s"              # forwarding
+set attribution = "%n wrote:"               # quoting
+set charset="utf-8"                         # terminal charset
+set send_charset="us-ascii:utf-8"           # encoding for outgoings
+set alias_format="%4n %t %-20a  %r"
+
+## --- Viewing ---
+unset markers              # no ugly plus signs
+set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+auto_view text/html
+alternative_order text/plain text/html text/enriched
+set status_on_top          # as you'd expect
+
+## --- Pager settings ---
+set pager_index_lines = 10 # number of index lines to show
+set pager_context = 3      # number of context lines to show
+set pager_stop             # don't go to next message automatically
+set menu_scroll            # scroll in menus
+set tilde
+
+## --- Header settings ---
+ignore *                                # ignore all headers
+unignore From: To: Cc: Date: Subject:   # show only these
+unhdr_order *                           # order things
+hdr_order From: To: Cc: Date: Subject:  # and in this order
+my_hdr Bcc: $my_address                 # helps with conversations
+## Extra info.
+my_hdr X-Info: No Gods No Masters
+## OS Info.
+#my_hdr X-Operating-System: `uname -s`, kernel `uname -r`
+my_hdr X-Operating-System: 4.1.15-1.1381_SKYN12nnmp
+## This header only appears to MS Outlook users
+my_hdr X-Message-Flag: WARNING!! Outlook sucks
+## Custom Mail-User-Agent ID.
+my_hdr User-Agent: Every email client sucks, this one just sucks less.
+
+## --- Local directories
+set mailcap_path    = ~/.mutt/mailcap       # how to view attachments
+set alias_file      = ~/.mutt/alias         # alias file
+set tmpdir          = ~/.mutt/temp          # where to keep temp files
+
+## --- Index settings ---
+set sort=threads                              # like gmail?
+set sort_aux=reverse-last-date-received       # show threads with youngest message list
+set sort_browser=reverse-date                 # sort by newest first
+set sort_alias=alias                          # sort alias file by alias
+set reverse_alias                             # show names from alias file in index
+
+## --- Source password file ---
+source "gpg2 -dq $HOME/.my-pwds.gpg |"
+
+## --- Folder hooks ---
+folder-hook account1/* source ~/.mutt/account1.muttrc
+folder-hook account2/* source ~/.mutt/account2.muttrc
+folder-hook * "exec collapse-all"
+
+## --- Default account ---
+source ~/.mutt/account1.muttrc
+
+## --- Macros for switching accounts ---
+macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.mutt/account1.muttrc<enter><change-folder>!<enter>'
+macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.mutt/account2.muttrc<enter><change-folder>!<enter>'
+macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
+
+## --- Mailing lists ---
+lists arch-announce@archlinux.org           # Arch announcements
+subscribe arch-announce@archlinux.org
+lists bugtraq@securityfocus.com  # Bugtraq daily digest
+subscribe bugtraq@securityfocus.com  # Bugtraq daily digest
+lists fulldisclosure@seclists.org       # Fulldisclosure list
+subscribe fulldisclosure@seclists.org       # Fulldisclosure list
+## --- Source files ---
+source $alias_file                        # required for functionality
+source ~/.mutt/256colors.muttrc              # colors
+source ~/.mutt/macros                     # macros
+source ~/.mutt/sidebar                    # sidebar
+source ~/.mutt/crypt                      # PGP
+
+# vim: set ft=muttrc tw=72 colorcolumn=73:

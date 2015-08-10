@@ -1,0 +1,7 @@
+[moc-tray main]
+playlists=
+startmoc=
+term_cmd=urxvt
+exitmoc=1
+killsrv_btn=1
+tearoff=1
