@@ -1,0 +1,3 @@
+[submodule "screen/lumialda"]
+	path = screen/lumialda
+	url = https://github.com/meskarune/lumialda.git
