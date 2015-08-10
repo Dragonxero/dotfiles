@@ -1,6 +1,6 @@
 #!/bin/zsh
 #------------------------------------------------ 
-# Configs of vaious authors, gathered by liara.
+# Configs from various authors, gathered by liara.
 #
 # ~/.zshrc
 #

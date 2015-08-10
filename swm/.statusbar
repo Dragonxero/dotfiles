@@ -15,25 +15,25 @@ GREY=#FF7C7B78
 VIOLET=#FF6F00FF
 function statusbar {
 
-	bat() {
-	bat0=$(acpi|cut -d "," -f 2)
-	echo $bat0
-	}
-	
-	clock() {
-	time=$(date "+%A %b %d %Y %R")
-	echo $time
-	}
+  bat() {
+  bat0=$(acpi|cut -d "," -f 2)
+  echo $bat0
+  }
 
-	vol() {
-	vol="$(amixer get Master | sed -nr '$ s:.*\[(.+%)].*:\1:p')"
-	echo $vol
-	}
+  clock() {
+  time=$(date "+%A %b %d %Y %R")
+  echo $time
+  }
 
-	kern() {
-	kern=$(uname -r)
-	echo $kern
-	}
+  vol() {
+  vol="$(amixer get Master | sed -nr '$ s:.*\[(.+%)].*:\1:p')"
+  echo $vol
+  }
+
+  kern() {
+  kern=$(uname -r)
+  echo $kern
+  }
 
   load() {
   load=$(cat /proc/loadavg|awk '{print $1}')
@@ -72,10 +72,10 @@ function statusbar {
   root=`df -h | grep \/dev\/sda1 | awk '{print $3}'`
   echo -e "$root"
   }
-	up() {
-	up=$(uptime -p)
-	echo $up
-	}
+  up() {
+  up=$(uptime -p)
+  echo $up
+  }
 
   weather() {
   weather=$(~/bin/weather.sh ZMUB)
