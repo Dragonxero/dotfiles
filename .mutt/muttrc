@@ -89,6 +89,7 @@ lists bugtraq@securityfocus.com  # Bugtraq daily digest
 subscribe bugtraq@securityfocus.com  # Bugtraq daily digest
 lists fulldisclosure@seclists.org       # Fulldisclosure list
 subscribe fulldisclosure@seclists.org       # Fulldisclosure list
+
 ## --- Source files ---
 source $alias_file                        # required for functionality
 source ~/.mutt/256colors.muttrc              # colors
