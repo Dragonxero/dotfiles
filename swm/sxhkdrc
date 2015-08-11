@@ -1,5 +1,5 @@
 # ~/.config/sxhkd/sxhkdrc
-# depends on vroum, groaw, tile, fullscreen, grid, wew, focus.sh
+# depends on vroum, tile, fullscreen, rainbow, grid, wew, focus.sh in bin/
 
 super + Q
 	pkill swm
@@ -64,20 +64,10 @@ super + {Tab, shift + Tab}
     wmp -r $(wattr wh $(pfw))
 
 super + shift + {h,j,k,l}
-    focus {h,j,k,l}
+    ~/bin/focus.sh {h,j,k,l}
 
-super + {F1,F2,F3,F4,F5}
-    ~/bin/groaw -t {1,2,3,4,5}
-
-super + ctrl + {F1,F2,F3,F4,F5}
-    ~/bin/groaw -o {1,2,3,4,5}
-
-super + shift + {F1,F2,F3,F4,F5}
-    ~/bin/groaw -d all; \
-    ~/bin/groaw -a {1,2,3,4,5}
-
-super + shift + BackSpace
-    ~/bin/groaw -d all
+super + r
+    ~/bin/rainbow
 
 super + {t,v}
     ~/bin/tile {-h,-v}
