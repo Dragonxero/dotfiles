@@ -1,0 +1,141 @@
+background no
+out_to_console yes
+out_to_x no
+update_interval	2
+total_run_times	0
+short_units	yes
+pad_percents 3
+own_window_class conky
+
+override_utf8_locale yes
+
+TEXT
+,[
+#Amixer
+{"full_text" : " ☊ ≣ ${exec python ~/.i3/amixer.py} ", "color" : "\#aba800"},\
+{"full_text": " ♀ ♬ mic:${exec amixer get Speaker | tail -n 1 | cut -d ' ' -f 9} ","color": "\#1faaaa"},\
+#{"full_text": " ✿ 🎷 moc:${exec mocp -Q %song %artist} ","color": "\#7782e8"},\
+
+#CPU overall
+{"full_text" : " ☿ ❤ $acpitemp°C [$cpu%] ", "color": "\#FE0001"},\
+
+#Wireless
+{"full_text" : " ♃ ≈ ${wireless_essid wlp7s0}", "color" : "\#00c918","separator": false},\
+
+# Download:
+{"full_text":"↓","color":"\#888888","separator":false,"separator_block_width":6},\
+{"full_text":"${if_match ${downspeedf wlp7s0}<100}${downspeed 
+wlp7s0}","color":"\#AAF096","separator":false,"separator_block_width":6},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${downspeedf wlp7s0}<300}${downspeed 
+wlp7s0}","color":"\#68B1E8","separator":false,"separator_block_width":6},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${downspeedf wlp7s0}<700}${downspeed 
+wlp7s0}","color":"\#DB70B8","separator":false,"separator_block_width":6},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${downspeedf wlp7s0}<1000}${downspeed 
+wlp7s0}","color":"\#9470DB","separator":false,"separator_block_width":6},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${downspeedf wlp7s0}>=1000}${downspeed 
+wlp7s0}","color":"\#FF3333","separator":false,"separator_block_width":6},\
+{"full_text":"${endif}${endif}${endif}${endif}${endif}"},\
+
+# Upload:
+{"full_text":"↑","color":"\#888888","separator":false,"separator_block_width":6},\
+{"full_text":"${if_match ${upspeedf wlp7s0}<15}${upspeed 
+wlp7s0} ","color":"\#AAF096"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${upspeedf wlp7s0}<35}${upspeed 
+wlp7s0} ","color":"\#9470DB"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${upspeedf wlp7s0}>=35}${upspeed 
+wlp7s0} ","color":"\#FF3333"},\
+{"full_text":"${endif}${endif}${endif}"},\
+
+# Memoy
+{"full_text": " ⟆ ♠ ram: $mem swap: $swap","color":"\#3777e6","separator": false},\
+{"full_text":"${if_match 
+${memperc}<30}${memeasyfree} ","color":"\#AAF096"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match 
+${memperc}<60}${memeasyfree} ","color":"\#F0DC64"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match 
+${memperc}<85}${memeasyfree} ","color":"\#FF9933"},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match 
+${memperc}>=85}${memeasyfree} ","color":"\#FF3333"},\
+{"full_text":"${endif}${endif}${endif}${endif}"},\
+
+#Kernel
+{"full_text":" ☠","color":"\#ff0086","separator":false,"separator_block_width":6},\
+{"full_text":"${kernel} ☠ ","color":"\#ff0086"},\
+
+#Battery
+#{"full_text" : " ♄ ☇ ${battery_percent}% ", "color" : "\#9933CC"},\
+
+#CPU
+{"full_text":" ☕ CPU1:","color":"\#35d2ff","separator":false,"separator_block_width":6},\
+{"full_text":"${if_match ${cpu cpu0}<25}${cpu 
+cpu0}","color":"\#AAF096","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu0}<50}${cpu 
+cpu0}","color":"\#F0DC64","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu0}<75}${cpu 
+cpu0}","color":"\#FF9933","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":" ${if_match ${cpu cpu0}<=100}${cpu 
+cpu0} ","color":"\#FF3333","separator":false,"separator_block_width":0},\
+{"full_text":"${endif}${endif}${endif}${endif}"},\
+{"full_text":"%","color":"\#EEEEEE","separator":false,"separator_block_width":6},\
+{"full_text":" ☕ CPU2:","color":"\#35d2ff","separator":false,"separator_block_width":6},\
+{"full_text":"${if_match ${cpu cpu1}<25}${cpu 
+cpu1}","color":"\#AAF096","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu01}<50}${cpu 
+cpu1}","color":"\#F0DC64","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu1}<75}${cpu 
+cpu1}","color":"\#FF9933","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu1}<=100}${cpu 
+cpu1}","color":"\#FF3333","separator":false,"separator_block_width":0},\
+{"full_text":"${endif}${endif}${endif}${endif}"},\
+{"full_text":"%","color":"\#EEEEEE","separator":false,"separator_block_width":6},\
+{"full_text":" ☕ CPU3:","color":"\#35d2ff","separator":false,"separator_block_width":6},\
+{"full_text":"${if_match ${cpu cpu2}<25}${cpu 
+cpu2}","color":"\#AAF096","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu2}<50}${cpu 
+cpu2}","color":"\#F0DC64","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu2}<75}${cpu 
+cpu2}","color":"\#FF9933","separator":false,"separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu2}<=100}${cpu 
+cpu2}","color":"\#FF3333","separator":false,"separator_block_width":0},\
+{"full_text":"${endif}${endif}${endif}${endif}"},\
+{"full_text":"%","color":"\#EEEEEE","separator":false,"separator_block_width":6},\
+{"full_text":" ☕ CPU4:","color":"\#35d2ff","separator":false,"separator_block_width":6},\
+{"full_text":"${if_match ${cpu cpu3}<25}${cpu 
+cpu3}","color":"\#AAF096","separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu3}<50}${cpu 
+cpu3}","color":"\#F0DC64","separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu3}<75}${cpu 
+cpu3}","color":"\#FF9933","separator_block_width":0},\
+{"full_text":"${else}"},\
+{"full_text":"${if_match ${cpu cpu3}<=100}${cpu 
+cpu3}","color":"\#FF3333","separator_block_width":0},\
+{"full_text":"${endif}${endif}${endif}${endif}"},\
+{"full_text":"% ","color":"\#EEEEEE","separator_block_width":6},\
+
+#Weather
+{"full_text" : " ☀ ☂ ${execi 300 bash ~/.i3/weather.sh BIRK}", "color" : "\#fd8900"},\
+
+#Date and time
+{"full_text" : " ♅ ᴥ ${time %a %e %b} ", "color" : "\#dd00dd"},\
+{"full_text" : " ♆ ⌚ ${time %l:%M:%S %p} ", "color" : "\#4599CE"}\
+]
