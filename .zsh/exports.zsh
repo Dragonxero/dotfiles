@@ -2,9 +2,6 @@
 # Zsh exports
 #------------------------------------------------
 
-export LANG=en_US.UTF-8
-export LC_MESSAGES="C"
-
 # Editors
 export EDITOR='vim'
 export VISUAL='vim'

@@ -33,8 +33,8 @@ autocmd FileType c          set omnifunc=ccomplete#Complete
 autocmd FileType cpp        set omnifunc=ccomplete#Complete
 
 " With a map leader it's possible to do extra key combinations
-let mapleader = "\<space>"
-let g:mapleader = "\<space>"
+let mapleader = ","
+let g:mapleader = ","
 
 " Setup Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
