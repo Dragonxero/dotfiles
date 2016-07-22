@@ -100,6 +100,6 @@ while true
 do
 	echo "$(statusbar)"
 	sleep 0.5	
-done | lemonbar -d -g 1850x15 -f "-*-stlarch-medium-r-*-*-10-*-*-*-*-*-*-*,-xos4-terminesspowerline-medium-r-normal--0-0-72-72-c-0-iso10646-1" -B "#FF010D11" -F "#FFD2C5BC" -p &
+done | lemonbar -d -g 1850x15 -f "-*-stlarch-medium-r-*-*-10-*-*-*-*-*-*-*" -f "-xos4-terminesspowerline-medium-r-normal--0-0-72-72-c-0-iso10646-1" -B "#FF010D11" -F "#FFD2C5BC" -p &
 
 # vim: set ft=sh ts=2 sw=2 tw=0 fenc=utf-8:
