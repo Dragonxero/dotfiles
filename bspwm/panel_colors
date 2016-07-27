@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#get the value of a color from the current xrdb load configuration
+getXresColor() {
+echo -n "$( xrdb -query | grep $1: | grep -oE '#[a-zA-Z0-9]{6}' | cut -c 2-)";
+}
+
+
+COLOR_BACKGROUND="#ff$(getXresColor background)"
+COLOR_FOREGROUND="#ff$(getXresColor foreground)"
+COLOR_ICON="#ff$(getXresColor color4)"
+COLOR_ACTIVE="#ff$(getXresColor color10)"
+COLOR_OCCUPIED="#FF$(getXresColor color4)"
+COLOR_URGENT="#FF$(getXresColor color1)"
+
+COLOR_BLACK="#FF$(getXresColor color8)"
+COLOR_DRED="#FF$(getXresColor color1)"
+COLOR_RED="#FF$(getXresColor color9)"
+COLOR_DGREEN="#FF$(getXresColor color2)"
+COLOR_GREEN="#FF$(getXresColor color10)"
+COLOR_DYELLOW="#FF$(getXresColor color3)"
+COLOR_YELLOW="#FF$(getXresColor color11)"
+COLOR_DBLUE="#FF$(getXresColor color4)"
+COLOR_BLUE="#FF$(getXresColor color12)"
+COLOR_DMAGENTA="#FF$(getXresColor color5)"
+COLOR_MAGENTA="#FF$(getXresColor color13)"
+COLOR_DCYAN="#FF$(getXresColor color6)"
+COLOR_CYAN="#FF$(getXresColor color14)"
+COLOR_WHITE="#FF$(getXresColor color7)"
+
+
+# Height of underlines / overlines
+LINEHEIGHT="3"
+
+

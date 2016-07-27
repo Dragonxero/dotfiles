@@ -1,0 +1,104 @@
+#! /bin/sh
+
+#FONT3="-*-lemon-medium-*-*-*-11-110-*-*-m-*-*-*"
+FONT3="-xos4-terminesspowerline-medium-r-normal--14-*-*-*-c-*-iso10646-1"
+#FONT1="-benis-uushi-medium-r-normal--11-90-75-75-p-58-iso10646-1"
+FONT2="-*-fontawesome-medium-*-*-*-12-110-*-*-*-*-*-*"
+#FONT1="-*-stlarch-medium-r-normal-*-10-100-75-75-c-80-iso10646-1"
+FONT1="-*-stlarch-medium-r-normal-*-12-*-*-*-c-*-iso10646-1"
+#BAR_LENGTH=10
+
+. panel_colors
+
+if xdo id -a "$PANEL_WM_NAME" > /dev/null ; then
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+bspc config top_padding $PANEL_HEIGHT
+bspc subscribe report > "$PANEL_FIFO" &
+
+malina() {
+echo "%{F$COLOR_ICON}  %{F-} $(uname -r) "
+}
+
+net(){
+  essid=`iwgetid | awk -F ':' '{print $2}' | sed -e 's/"//g'`
+  signal=`awk '/wlan0:/ {print $3}' /proc/net/wireless |sed -e 's/\.//g'`
+  perc=`echo $[$signal *100/70]`
+  echo -e "%{F$COLOR_ICON}  %{F-} $essid $perc% "
+}
+
+
+vol() {
+  vol="$(amixer get PCM | sed -nr '$ s:.*\[(.+%)].*:\1:p')"
+  echo "%{F$COLOR_ICON}  %{F-} $vol "
+}
+
+while true; do
+    echo "T" "$(malina)$(net)$(vol)" > "$PANEL_FIFO"
+	sleep 1s
+done &
+
+
+
+#xtitle -sf 'T%s' > "$PANEL_FIFO" &
+
+clock() {
+  time=$(date "+%A %b %d %Y %R")
+  echo "%{F$COLOR_ICON}  %{F-} $time "
+}
+
+weather() {
+  weather=$(~/bin/IconicWeather.sh LALA)
+  echo "%{F$COLOR_ICON} $weather %{F-} "
+}
+
+disk(){
+  root=`df -h | grep \/dev\/root | awk '{print $3}'`
+  echo -e "%{F$COLOR_ICON}  %{F-} $root "
+}
+ 
+temp() {
+  temp=$(awk '{printf "%3.1f°C\n", $1/1000}' /sys/class/thermal/thermal_zone0/temp)
+  echo "%{F$COLOR_ICON}  %{F-} $temp "
+}
+
+cpuload() {
+  LINE=`ps -eo pcpu |grep -vE '^\s*(0.0|%CPU)' |sed -n '1h;$!H;$g;s/\n/ +/gp'`
+  echo "%{F$COLOR_ICON}  %{F-} $(bc <<< $LINE)% "
+}
+
+cpul() {
+    echo "%{F$COLOR_ICON}  %{F-} $(cpul.sh)% "
+}
+
+load() {
+  load=$(cat /proc/loadavg|awk '{print $1}')
+  echo "%{F$COLOR_ICON}  %{F-} $load "
+}
+
+while true; do
+echo "S" "$(load)$(cpul)$(temp)$(disk)$(weather)$(clock)" > "$PANEL_FIFO"
+	sleep 1s
+done &
+
+#. panel_colors
+
+panel_bar < "$PANEL_FIFO" | lemonbar -a 32 -n "$PANEL_WM_NAME" -g 1800x20+12+10 -f "$FONT1" -f "$FONT2" -f "$FONT3" -F "$COLOR_FOREGROUND" -B "$COLOR_BACKGROUND" -u $LINEHEIGHT | sh &
+
+wid=$(xdo id -a "$PANEL_WM_NAME")
+tries_left=20
+while [ -z "$wid" -a "$tries_left" -gt 0 ] ; do
+	sleep 0.05
+	wid=$(xdo id -a "$PANEL_WM_NAME")
+	tries_left=$((tries_left - 1))
+done
+[ -n "$wid" ] && xdo above -t "$(xdo id -N Bspwm -n root | sort | head -n 1)" "$wid"
+
+wait
