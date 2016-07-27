@@ -8,8 +8,8 @@ Dependencies:
 
 Place
 ```
-bspwmrc to $HOME/.config/bspwmrc
-sxhkdrc to $HOME/.config/sxhkdrc
+bspwmrc to $HOME/.config/bspwm/bspwmrc
+sxhkdrc to $HOME/.config/sxhkd/sxhkdrc
 .xinitrc to $HOME/.xinitrc
 all the other scripts to $HOME/bin in your path and make them executable.
 ```
