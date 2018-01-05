@@ -72,7 +72,7 @@ index 877afab..5774f5f 100644
   */
 -char font[] = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
 -int borderpx = 2;
-+static char *font = "Iosevka:style=Regular:pixelsize=14:antialias=true:hinting=true, Noto Emoji:style=Regular:pixelsize=14:antialias=true:hinting=true, Symbola:style=Regular:pixelsize=14:antialias=true:hinting=true, Unifont:style=Medium:pixelsize=14:antialias=true:hinting=true, FreeSerif:style=Regular:pixelsize=14:antialias=true:hinting=true, WenQuanYi Micro Hei Mono:style=Light:pixelsize=14:antialias=true:hinting=true";
++static char *font="TamzenForPowerline:style=Bold:stylelang=en,sl:slant=0:weight=200:width=100:pixelsize=16:spacing=110:foundry=Misc:antialias=False:index=0:outline=False:scalable=False, Noto Emoji:style=Regular:pixelsize=16:antialias=true:hinting=true,Symbola:style=Regular:pixelsize=16:antialias=true:hinting=true,Unifont:style=Medium:pixelsize=16:antialias=true:hinting=true, FreeSerif:style=Regular:pixelsize=16:antialias=true:hinting=true, Wuncon Siji:style=Regular:stylelang=en,en:slant=0:weight=80:width=100:pixelsize=10:spacing=110:foundry=Wuncon:antialias=False:index=0:outline=False:scalable=False";
 +static int bold_font = 1;
 +static int borderpx = 2;
 +#define histsize 2000
@@ -168,15 +168,15 @@ index 877afab..5774f5f 100644
 -	"magenta3",
 -	"cyan3",
 -	"gray90",
-+	"#000000",
-+	"#ff5555",
++	"#95a5a6",
++	"#be643c",
 +	"#50fa7b",
-+	"#f1fa8c",
-+	"#bd93f9",
++	"#e67e22",
 +	"#ff79c6",
++	"#3498db",
 +	"#8be9fd",
 +	/* "#ebdbb2", */
-+	"#bbbbbb",
++	"#f5f5f5",
  
  	/* 8 bright colors */
 -	"gray50",
@@ -187,15 +187,15 @@ index 877afab..5774f5f 100644
 -	"magenta",
 -	"cyan",
 -	"white",
-+	"#44475a",
-+	"#ff5555",
-+	"#50fa7b",
-+	"#f1fa8c",
-+	"#bd93f9",
-+	"#ff79c6",
-+	"#8be9fd",
++	"#2c3e50",
++	"#e74c3c",
++	"#2ecc71",
++	"#f1c40f",
++	"#1abc9c",
++	"#9b59b6",
++	"#1abc9c",
 +	/* "#a89984", */
-+	"#ffffff",
++	"#ecf0f1",
  
  	[255] = 0,
  
@@ -216,7 +216,7 @@ index 877afab..5774f5f 100644
 -unsigned int defaultcs = 256;
 -unsigned int defaultrcs = 257;
 +static uint defaultfg = 188;
-+static uint defaultbg = 233;
++static uint defaultbg = 0;
 +static uint defaultcs = 6;
 +static uint defaultrcs = 257;
  
